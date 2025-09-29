@@ -21,9 +21,26 @@ export function ConnectorClient({ id }: { id: string }) {
     setLoading(true);
     try {
       const res = await getConnector(id);
-      setData(res);
-      setLabel(res?.label || "");
-      setCfg(JSON.stringify(res?.config ?? {}, null, 2));
+      // Narrow ApiResult<Connector> to Connector safely
+      const c = (res as Connector | { [key: string]: unknown });
+      const isConnector =
+        typeof c === "object" &&
+        c !== null &&
+        "id" in c &&
+        "provider" in c &&
+        "auth_method" in c &&
+        "tenant_id" in c &&
+        "status" in c;
+
+      if (isConnector) {
+        const conn = c as Connector;
+        setData(conn);
+        setLabel(conn.label || "");
+        setCfg(JSON.stringify(conn.config ?? {}, null, 2));
+      } else {
+        // Unexpected shape; treat as not found
+        setData(null);
+      }
     } catch {
       setData(null);
     } finally {

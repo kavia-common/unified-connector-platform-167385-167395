@@ -5,12 +5,11 @@ import { ConnectorClient } from "./Client";
  * Connector detail page entry (Server Component).
  * Extracts dynamic route params and renders the client-side UI wrapper.
  *
- * Use a minimal prop type to avoid PageProps constraint conflicts in this environment.
+ * We align with Next.js PageProps where params may be Promise-typed.
  */
-type RouteParams = { id: string };
-type RouteProps = { params: RouteParams };
+type IdParams = { id: string };
 
-export default function Page(props: RouteProps) {
-  const { id } = props.params;
-  return <ConnectorClient id={id} />;
+export default async function Page(props: { params: Promise<IdParams> | undefined }) {
+  const params = props.params ? await props.params : ({ id: "" } as IdParams);
+  return <ConnectorClient id={params.id} />;
 }

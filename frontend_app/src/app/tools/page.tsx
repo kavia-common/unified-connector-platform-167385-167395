@@ -27,7 +27,8 @@ export default function ToolsPage() {
         arguments: args ? (JSON.parse(args) as Record<string, unknown>) : {},
       };
       const res = await invokeTool(payload);
-      setResult(res);
+      const r = (res as { result?: unknown })?.result ?? res;
+      setResult(r);
     } catch (e) {
       const m = (e as { message?: string })?.message ?? "Invocation failed";
       setErr(m);

@@ -16,7 +16,8 @@ export default function RegistryPage() {
     setErr(null);
     try {
       const res = await listRegistry(apiKey || null);
-      setItems(res.items ?? []);
+      const items = (res as { items?: RegistryConnector[] })?.items ?? [];
+      setItems(Array.isArray(items) ? items : []);
     } catch (e) {
       const m = (e as { message?: string })?.message ?? "Failed to load registry";
       setErr(m);

@@ -25,7 +25,8 @@ export default function ConfluenceSpacesPage() {
         connector_id: connectorId || null,
         arguments: { query },
       });
-      setResult(res?.result ?? res);
+      const r = (res as { result?: unknown })?.result ?? res;
+      setResult(r);
     } catch (e) {
       const m = (e as { message?: string })?.message ?? "Search failed";
       setErr(m);

@@ -17,7 +17,8 @@ export default function Home() {
       setLoading(true);
       try {
         const res = await getConnectors();
-        if (mounted && res?.items) setConnectors(res.items.slice(0, 5));
+        const list = (res as { items?: Connector[] })?.items ?? [];
+        if (mounted) setConnectors(list.slice(0, 5));
       } finally {
         setLoading(false);
       }

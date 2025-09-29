@@ -17,7 +17,8 @@ export default function ConnectorsPage() {
     setErr(null);
     try {
       const res = await getConnectors();
-      setItems(res.items ?? []);
+      const list = (res as { items?: Connector[]; total?: number })?.items ?? [];
+      setItems(Array.isArray(list) ? list : []);
     } catch (e) {
       const m = (e as { message?: string })?.message ?? "Failed to load connectors";
       setErr(m);
