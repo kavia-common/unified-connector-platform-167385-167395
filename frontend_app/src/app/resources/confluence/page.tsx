@@ -46,7 +46,10 @@ export default function ConfluenceSpacesPage() {
         connector_id: connectorId || null,
         arguments: { name: query || "New Space" },
       });
-      setResult(res?.result ?? res);
+      // Safely extract optional "result" field when response is an object
+      const hasResult =
+        res && typeof res === "object" && res !== null && "result" in (res as Record<string, unknown>);
+      setResult(hasResult ? (res as { result?: unknown }).result : res);
     } catch (e) {
       const m = (e as { message?: string })?.message ?? "Create failed";
       setErr(m);
@@ -85,8 +88,12 @@ export default function ConfluenceSpacesPage() {
         <div className="mt-4">
           {err && <ErrorBanner message={err} />}
           {!err && loading && <Loader />}
-          {!err && !loading && result && (
-            <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+          {!err && !loading && typeof result !== "undefined" && (
+            <>
+              <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">
+                {JSON.stringify(result, null, 2)}
+              </pre>
+            </>
           )}
         </div>
       </div>
