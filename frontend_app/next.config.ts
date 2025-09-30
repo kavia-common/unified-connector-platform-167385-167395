@@ -18,20 +18,24 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   async rewrites() {
-    const backend = process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/+$/, "") || "";
+    // Prefer explicit env, otherwise fall back to the known running backend URL
+    const envBackend = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const fallback = "https://vscode-internal-32364-beta.beta01.cloud.kavia.ai:3001";
+    const backendBase = (envBackend && envBackend.trim().length > 0 ? envBackend : fallback).replace(/\/*$/, "");
+
     // Log to help verify configuration during build/start
     // eslint-disable-next-line no-console
     console.log("[next.config] Proxy rewrite configured:", {
-      NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+      NEXT_PUBLIC_BACKEND_URL: envBackend ?? "(not set, using fallback)",
       rewrite_from: "/api/proxy/:path*",
-      rewrite_to: backend ? `${backend}/:path*` : "(backend URL not set)",
+      rewrite_to: `${backendBase}/:path*`,
     });
 
     return [
       // Primary proxy path - all backend API calls should be made under this prefix.
       {
         source: "/api/proxy/:path*",
-        destination: `${backend}/:path*`,
+        destination: `${backendBase}/:path*`,
       },
     ];
   },
