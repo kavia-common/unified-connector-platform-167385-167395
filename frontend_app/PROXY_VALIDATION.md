@@ -12,8 +12,14 @@ This application uses a Next.js rewrite to forward same-origin requests under `/
     ```
     NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
     ```
+  - In the hosted environment for this project:
+    ```
+    NEXT_PUBLIC_BACKEND_URL=https://vscode-internal-32364-beta.beta01.cloud.kavia.ai:3001
+    ```
 - `next.config.ts`:
   - Configures a rewrite from `/api/proxy/:path*` to `${NEXT_PUBLIC_BACKEND_URL}/:path*`.
+  - If `NEXT_PUBLIC_BACKEND_URL` is not set, it falls back to:
+    `https://vscode-internal-32364-beta.beta01.cloud.kavia.ai:3001`
   - Logs the mapping at startup:
     ```
     [next.config] Proxy rewrite configured: { rewrite_from: "/api/proxy/:path*", rewrite_to: "<backend>/:path*" }
@@ -38,6 +44,7 @@ This application uses a Next.js rewrite to forward same-origin requests under `/
 
 4) Confirm in logs:
    - Frontend console: `[proxy-test] URLs { frontendFetchUrl, backendTargetUrl, NEXT_PUBLIC_BACKEND_URL }`
+   - Frontend console: `[proxy-test] Backend JSON response ...` or `[proxy-test] Backend text response sample ...`
    - API client: `[api] request { method, url }`
    - Server startup: `[next.config] Proxy rewrite configured...`
 
@@ -54,6 +61,8 @@ This application uses a Next.js rewrite to forward same-origin requests under `/
   - Restart the dev server after changing env.
   - Verify backend is reachable at `<NEXT_PUBLIC_BACKEND_URL>/auth/api-key`.
   - Check `next.config.ts` startup log for the intended rewrite mapping.
+  - Verify that the rewrite destination matches:
+    `https://vscode-internal-32364-beta.beta01.cloud.kavia.ai:3001/:path*`
 
 - If network errors occur:
   - Confirm backend process is running and accessible.

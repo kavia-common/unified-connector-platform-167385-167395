@@ -72,15 +72,18 @@ export default function ProxyTestPage() {
       if (isJson) {
         try {
           parsedJson = await res.json();
+          console.info("[proxy-test] Backend JSON response", parsedJson);
         } catch {
           notes.push("Response advertised JSON but failed to parse.");
           // fallback to text for inspection
           const txt = await res.text();
           textSample = txt.slice(0, 800);
+          console.info("[proxy-test] Backend text response sample", textSample);
         }
       } else {
         const txt = await res.text();
         textSample = txt.slice(0, 800);
+        console.info("[proxy-test] Backend text response sample", textSample);
       }
 
       const sample = (textSample || "").toLowerCase();
@@ -229,6 +232,12 @@ export default function ProxyTestPage() {
                 </pre>
               </div>
             ) : null}
+            <div className="grid gap-1">
+              <div className="text-gray-700">NEXT_PUBLIC_BACKEND_URL</div>
+              <code className="text-xs p-2 bg-gray-50 border rounded-md break-all">
+                {process.env.NEXT_PUBLIC_BACKEND_URL || "(not set)"}
+              </code>
+            </div>
           </div>
         )}
       </div>
