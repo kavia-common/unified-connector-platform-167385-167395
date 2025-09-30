@@ -19,16 +19,3 @@ Run:
 Notes:
 - If backend is not running, some pages use safe fallbacks and show empty states.
 - Auth modals are available on the Dashboard.
-
-Troubleshooting:
-- Runtime error "Cannot find module './100.js'":
-  - Cause: Building as static export (output: "export") can produce missing chunk errors at runtime for dynamic routes/components.
-  - Fix: This project is configured to run in server mode. Ensure you have NOT set NEXT_OUTPUT=export and do not add output:"export" in next.config.ts.
-  - Clean and rebuild:
-    - npm install (or npm ci)
-    - npm run build
-    - npm run start
-  - If using dev:
-    - Stop the dev server, optionally clear the .next folder, then re-run `npm run dev`.
-  - Verify in logs:
-    - In build/start logs you should see: `[next.config] Proxy rewrite configured: ... mode: "server"` indicating server runtime is used.
