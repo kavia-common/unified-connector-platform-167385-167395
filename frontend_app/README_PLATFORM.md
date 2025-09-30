@@ -8,7 +8,9 @@ This Next.js app implements the Ocean Professional themed UI to:
 - Manage provider registry
 
 Environment:
-- NEXT_PUBLIC_BACKEND_URL: Optional. Set to the FastAPI backend base URL (e.g., http://localhost:3001)
+- NEXT_PUBLIC_BACKEND_URL: Optional. Set to the FastAPI backend base URL (e.g., http://localhost:3001). Frontend calls are made to /api/proxy/:path* and rewritten to this URL.
+- Example .env.local:
+  NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 
 Run:
 - npm run dev
