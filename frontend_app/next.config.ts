@@ -13,9 +13,16 @@ import type { NextConfig } from "next";
  * This keeps browser requests same-origin and avoids CORS when hitting the backend.
  */
 const nextConfig: NextConfig = {
-  // Note: Avoid static export to ensure server runtime can resolve dynamic chunks.
-  // output: "export",
+  // Critical: DO NOT enable static export. Dynamic server runtime is required to avoid chunk
+  // resolution errors like "Cannot find module './100.js'". If you add `output: "export"`,
+  // Next.js will attempt to statically export pages and break dynamic chunk loading.
+  // output: "export", // leave commented out
+
+  // Force default server runtime with dynamic rendering as needed.
   reactStrictMode: true,
+
+  // Ensure server runtime (no static export) and allow incremental dynamic rendering.
+  // You can further control per-route behavior using generateStaticParams or route segment configs.
 
   async rewrites() {
     // Prefer explicit env, otherwise fall back to the known running backend URL
