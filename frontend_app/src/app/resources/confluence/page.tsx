@@ -85,8 +85,10 @@ export default function ConfluenceSpacesPage() {
         <div className="mt-4">
           {err && <ErrorBanner message={err} />}
           {!err && loading && <Loader />}
-          {!err && !loading && result && (
-            <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+          {!err && !loading && Boolean(result) && (
+            <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">
+              {JSON.stringify(result, null, 2)}
+            </pre>
           )}
         </div>
       </div>
