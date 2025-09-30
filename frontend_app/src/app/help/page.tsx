@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HelpPage() {
   return (
     <div className="grid gap-4">
@@ -7,6 +9,9 @@ export default function HelpPage() {
           Configure NEXT_PUBLIC_BACKEND_URL in your environment to point to the backend FastAPI service.
           If not set, the UI will attempt to call relative paths.
         </p>
+        <div className="mt-3">
+          <Link className="btn" href="/help/proxy-test">Open Proxy Diagnostics</Link>
+        </div>
       </div>
 
       <div className="card">
