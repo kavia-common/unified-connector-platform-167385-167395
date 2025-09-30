@@ -80,9 +80,11 @@ export default function ToolsPage() {
         <div className="mt-4">
           {err && <ErrorBanner message={err} />}
           {!err && loading && <Loader />}
-          {!err && !loading && result && (
-            <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">{JSON.stringify(result, null, 2)}</pre>
-          )}
+          {!err && !loading && Boolean(result) ? (
+            <pre className="text-xs p-3 bg-gray-50 border rounded-md overflow-auto">
+              {JSON.stringify(result as unknown, null, 2)}
+            </pre>
+          ) : null}
         </div>
       </div>
     </div>
