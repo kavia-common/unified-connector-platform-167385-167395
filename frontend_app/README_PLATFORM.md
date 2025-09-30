@@ -16,21 +16,6 @@ Run:
 - npm run dev
 - Open http://localhost:3000
 
-Deployment and routing (IMPORTANT):
-- This app expects /api/proxy/:path* requests to be forwarded to the backend (FastAPI) and not served by static hosting or Next.js 404 pages.
-- There are two supported approaches:
-  1) Let Next.js handle rewrites:
-     - Set NEXT_PUBLIC_BACKEND_URL to your FastAPI base URL (e.g., http://localhost:3001).
-     - All browser requests to /api/proxy/... will be rewritten to ${NEXT_PUBLIC_BACKEND_URL}/... by Next.js.
-     - Ensure your platform/router forwards requests to the Next.js server without intercepting /api/proxy paths.
-  2) Let your reverse proxy (nginx, etc.) handle /api/proxy:
-     - Route /api/proxy/ to the backend service directly (e.g., proxy_pass http://backend:3001/).
-     - Route everything else to the Next.js service (port 3000).
-     - Do NOT route /api/proxy to the frontend if you choose this option.
-
-Common 404 cause:
-- If NEXT_PUBLIC_BACKEND_URL is not set and your router sends /api/proxy/... to the frontend, Next.js will return a 404 HTML page. Set NEXT_PUBLIC_BACKEND_URL and restart, or proxy /api/proxy to the backend in your reverse proxy.
-
 Notes:
 - If backend is not running, some pages use safe fallbacks and show empty states.
 - Auth modals are available on the Dashboard.
